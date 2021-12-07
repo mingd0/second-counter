@@ -1,23 +1,51 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState, useEffect, useMemo } from "react";
+
+import Header from "./components/Header";
+import Button from "./components/Button";
+import Counter from "./components/Counter";
 
 function App() {
+
+  const myBirthday = useMemo(() => new Date(1991, 8, 3), [])
+
+  const [secondCounter, setSecondCounter] = useState(0)
+  const [totalSeconds, setTotalSeconds] = useState(Date.now() - myBirthday)
+  const [startTime, setStartTime] = useState(new Date())
+
+  const resetCounter = () => {
+    setStartTime(Date.now())
+    setSecondCounter(0)
+  }
+
+  useEffect(() => {
+    const interval = setInterval(() => setTotalSeconds(
+      Math.floor((new Date() - myBirthday) / 1000),
+      1000)
+    );
+    return () => {
+      clearInterval(interval)
+    };
+  }, [myBirthday])
+
+  useEffect(() => {
+    const interval = setInterval(() => setSecondCounter(
+      Math.floor((new Date() - startTime) / 1000),
+      1000)
+    );
+    return () => {
+      clearInterval(interval)
+    };
+  }, [startTime])
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className='container'>
+      <Header title='Second Counter' />
+      <Counter label='Total Seconds' value={totalSeconds} unit='sec' />
+      <Counter label='Second Counter' value={secondCounter} unit='sec' />
+      <Button
+        onClick={resetCounter}
+        text='Reset Second Counter'
+        color='#03BCD4' />
     </div>
   );
 }
