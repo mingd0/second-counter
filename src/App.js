@@ -6,7 +6,7 @@ import Counter from "./components/Counter";
 
 function App() {
 
-  const myBirthday = useMemo(() => new Date(1991, 8, 3), [])
+  const myBirthday = useMemo(() => new Date(1991, 7, 3), [])
 
   const [secondCounter, setSecondCounter] = useState(0)
   const [totalSeconds, setTotalSeconds] = useState(Date.now() - myBirthday)
@@ -40,8 +40,8 @@ function App() {
   return (
     <div className='container'>
       <Header title='Second Counter' />
-      <Counter label='Total Seconds' value={totalSeconds} unit='sec' />
-      <Counter label='Second Counter' value={secondCounter} unit='sec' />
+      <Counter label='Total Seconds' value={totalSeconds.toLocaleString()} unit='sec' />
+      <Counter label='Second Counter' value={secondCounter.toLocaleString()} unit='sec' />
       <Button
         onClick={resetCounter}
         text='Reset Second Counter'
